@@ -1,16 +1,6 @@
----
-- hosts: My_Group
-
-  tasks:
-  - name: Update APT package manager repositories cache
-    become: true
-    apt:
-      update_cache: yes
-
-  - name: Install OpenJDK Java11
-    become: yes
-    apt:
-      name: "{{ item }}"
-      state: present
-    with_items:
-     openjdk-8-jdk
+From ubuntu
+RUN apt-get update
+RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
+RUN apt-get -y install apache2
+ADD ./index.html /var/www/html
+ENTRYPOINT apachectl -D FOREGROUND
