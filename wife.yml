@@ -1,6 +1,14 @@
-From ubuntu
-RUN apt-get update
-RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
-RUN apt-get -y install apache2
-ADD ./index.html /var/www/html
-ENTRYPOINT apachectl -D FOREGROUND
+---
+
+ - host: webserve1
+   name: play1
+   tasks:
+    - name: install Apache
+      apt: name=apache2 state=latest
+      
+    - name: configure website
+      become: true
+      copy: src=index.html dest=/var/www/html
+      
+    - name: start Apache2 service
+      service: name=apache2 state=started
